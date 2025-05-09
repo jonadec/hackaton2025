@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
 
@@ -7,41 +7,31 @@ import { AuthService } from 'app/services/auth.service';
   selector: 'app-navbar',
   imports: [RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrl: './navbar.component.css',
 })
-
-export class NavbarComponent {
-  isLogged :any;
-  isAdmin :any = false;
-  private authS = inject(AuthService);
-  private router = inject(Router);
+export class NavbarComponent implements OnInit {
+  isLogged = false; // Estado inicial
+  isAdmin = false; // Estado inicial
   mobileMenuOpen = false;
 
-  constructor() {
-    if(this.authS.isAdmin()){
-      this.isAdmin = true;
-    }
-    this.isLog();
-    this.isAd();
+  constructor(private authS: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    // Suscribirse a los cambios en el estado de autenticación
+    this.authS.isLogged$.subscribe((logged) => {
+      this.isLogged = logged;
+    });
+
+    this.authS.isAdmin$.subscribe((admin) => {
+      this.isAdmin = admin;
+    });
   }
+
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen; // Alternar el estado del menú móvil
   }
 
   logout(): void {
-    this.authS.logout();
-    this.isLogged = false;
-    this.isAdmin = false;
-    this.router.navigate(['/login']);
+    this.authS.logout(); // Llama al servicio para cerrar sesión
   }
-
-  isLog(){
-    this.isLogged = this.authS.isLogged();
-  }
-  isAd(){
-    if(this.authS.isAdmin()){
-      this.isAdmin = true;
-    }
-  }
-
 }

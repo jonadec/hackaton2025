@@ -120,7 +120,7 @@ export class HomeComponent implements OnInit {
         formData.append('imagen', blob, 'captura.jpg');
         formData.append('gesto', this.gesture.nombre);
         formData.append('cumple', this.cumple.toString());
-        formData.append('usuario', '0cfdef68-d2e2-4945-9c20-737ae9329f76');
+        formData.append('usuario', localStorage.getItem('id') || '');
   
         try {
           // Enviar la solicitud a la API

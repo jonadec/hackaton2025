@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from 'app/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,7 @@ export class LoginComponent {
             icon: 'success',
             title: 'Login correcto',
             text: 'Bienvenido',
-            position: 'top-end',
+            position: 'center',
             timer: 3000,
             showConfirmButton: false
           });
@@ -44,6 +45,7 @@ export class LoginComponent {
           localStorage.setItem('isAdmin', res.isAdmin.toString());
           localStorage.setItem('login', res.login.toString()); 
           localStorage.setItem('id', res.id.toString());
+          this._authS.updateAuthState(); // Actualizar el estado reactivo
           if(res.isAdmin) {
             this._router.navigate(['/registropruebas']);
           } else if(!res.isAdmin) {
