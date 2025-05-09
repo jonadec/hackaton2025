@@ -1,0 +1,24 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">Registro de Pruebas</h1>
+  
+  <!-- Mostrar mensaje si no hay pruebas -->
+  <div *ngIf="pruebas.length === 0" class="text-center text-gray-500">
+    No hay pruebas registradas.
+  </div>
+
+  <!-- Mostrar las pruebas -->
+  <div *ngFor="let prueba of pruebas" class="bg-white shadow-md rounded-lg p-4 mb-4">
+    <div class="flex items-center">
+      <!-- Imagen de la prueba -->
+      <img [src]="prueba.imagen" alt="Imagen de la prueba" class="w-32 h-32 object-cover rounded-md mr-4">
+      
+      <!-- Información de la prueba -->
+      <div>
+        <p><strong>Gesto:</strong> {{ prueba.gesto }}</p>
+        <p><strong>Resultado:</strong> {{ prueba.cumple === 'true' ? 'Cumple' : 'No Cumple' }}</p>
+        <p><strong>Usuario:</strong> {{ prueba.usuario.nombre }} {{ prueba.usuario.apellidopa }} {{ prueba.usuario.apellidoma }}</p>
+        <p><strong>Email:</strong> {{ prueba.usuario.email }}</p>
+      </div>
+    </div>
+  </div>
+</div>

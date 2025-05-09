@@ -1,22 +1,48 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild, ElementRef, NgModule } from '@angular/core';
+import Swal from 'sweetalert2';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  NgModule,
+} from '@angular/core';
 import { MediapipeService } from 'app/services/mediapipe.service';
 
 const FACE_GESTURES = [
   { tipo: 'rostro', nombre: 'Sonríe', shape: 'mouthSmileLeft', umbral: 0.4 },
-  { tipo: 'rostro', nombre: 'Levanta las cejas', shape: 'browOuterUpLeft', umbral: 0.5 },
-  { tipo: 'rostro', nombre: 'Frunce el ceño', shape: 'browDownLeft', umbral: 0.5 },
-  { tipo: 'rostro', nombre: 'Cierra el ojo izquierdo', shape: 'eyeBlinkLeft', umbral: 0.5 },
-  { tipo: 'rostro', nombre: 'Cierra el ojo derecho', shape: 'eyeBlinkRight', umbral: 0.5 },
-  { tipo: 'rostro', nombre: 'Abre la boca', shape: 'jawOpen', umbral: 0.5 }
+  {
+    tipo: 'rostro',
+    nombre: 'Levanta las cejas',
+    shape: 'browOuterUpLeft',
+    umbral: 0.5,
+  },
+  {
+    tipo: 'rostro',
+    nombre: 'Frunce el ceño',
+    shape: 'browDownLeft',
+    umbral: 0.5,
+  },
+  {
+    tipo: 'rostro',
+    nombre: 'Cierra el ojo izquierdo',
+    shape: 'eyeBlinkLeft',
+    umbral: 0.5,
+  },
+  {
+    tipo: 'rostro',
+    nombre: 'Cierra el ojo derecho',
+    shape: 'eyeBlinkRight',
+    umbral: 0.5,
+  },
+  { tipo: 'rostro', nombre: 'Abre la boca', shape: 'jawOpen', umbral: 0.5 },
 ];
 
 const HAND_GESTURES = [
-  { tipo: 'mano', nombre: 'Haz un pulgar arriba', shape: 'Thumb_Up' },
-  { tipo: 'mano', nombre: 'Haz la seña de victoria', shape: 'Victory' },
-  { tipo: 'mano', nombre: 'Haz la palma abierta', shape: 'Open_Palm' },
-  { tipo: 'mano', nombre: 'Haz el signo del rock 🤟', shape: 'ILoveYou' }
-
+  { tipo: 'mano', nombre: 'Haz un pulgar arriba 👍', shape: 'Thumb_Up' },
+  { tipo: 'mano', nombre: 'Haz la seña de victoria ✌️', shape: 'Victory' },
+  { tipo: 'mano', nombre: 'Haz la palma abierta 🖐️', shape: 'Open_Palm' },
+  { tipo: 'mano', nombre: 'Haz el signo del rock 🤟', shape: 'ILoveYou' },
 ];
 
 const GESTURES = [...FACE_GESTURES, ...HAND_GESTURES];
@@ -25,15 +51,15 @@ const GESTURES = [...FACE_GESTURES, ...HAND_GESTURES];
   selector: 'app-home',
   imports: [CommonModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
   cambiarGesto() {
-    const nuevaLista = GESTURES.filter(g => g.shape !== this.gesture.shape);
+    const nuevaLista = GESTURES.filter((g) => g.shape !== this.gesture.shape);
     this.gesture = nuevaLista[Math.floor(Math.random() * nuevaLista.length)];
     this.cumple = false; // Reinicia el estado
   }
-  
+
   @ViewChild('video') videoRef!: ElementRef;
   gesture = GESTURES[Math.floor(Math.random() * GESTURES.length)];
   cumple = false;
@@ -49,7 +75,6 @@ export class HomeComponent implements OnInit {
       video.play();
       this.loop();
     };
-  
   }
 
   async loop() {
@@ -58,9 +83,13 @@ export class HomeComponent implements OnInit {
     if (this.gesture.tipo === 'rostro') {
       const blendShapes = await this.mpService.detectFace(video);
       if (blendShapes) {
-        const shape = blendShapes.find((s: any) => s.categoryName === this.gesture.shape);
-        this.cumple = shape && 'umbral' in this.gesture && shape.score >= (this.gesture as any).umbral;
-
+        const shape = blendShapes.find(
+          (s: any) => s.categoryName === this.gesture.shape
+        );
+        this.cumple =
+          shape &&
+          'umbral' in this.gesture &&
+          shape.score >= (this.gesture as any).umbral;
       }
     } else {
       const detectedGesture = await this.mpService.detectGesture(video);
@@ -73,54 +102,69 @@ export class HomeComponent implements OnInit {
   enviar() {
     const canvas = document.createElement('canvas');
     const video = this.videoRef.nativeElement;
-
+  
     // Configurar el tamaño del canvas según el video
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-
+  
     const ctx = canvas.getContext('2d');
     if (ctx) {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     }
-
+  
     // Convertir el canvas a Blob (imagen JPG)
     canvas.toBlob(async (blob) => {
-        if (blob) {
-            // Descargar la imagen para depuración
-            const downloadLink = document.createElement('a');
-            const imageUrl = URL.createObjectURL(blob);
-            downloadLink.href = imageUrl;
-            downloadLink.download = 'captura.jpg';
-            downloadLink.click();
-            URL.revokeObjectURL(imageUrl); // Liberar memoria
-
-            // Crear un objeto FormData
-            const formData = new FormData();
-            formData.append('imagen', blob, 'captura.jpg');
-            formData.append('gesto', this.gesture.nombre);
-            formData.append('cumple', this.cumple.toString());
-
-            try {
-                // Enviar la solicitud a la API
-                const response = await fetch('http://175.1.63.253:3000/api/pruebas/con-imagen', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    alert('Datos enviados correctamente.');
-                } else {
-                    alert('Error al enviar los datos.');
-                }
-            } catch (error) {
-                console.error('Error al enviar la solicitud:', error);
-                alert('Error al enviar los datos.');
+      if (blob) {
+        // Crear un objeto FormData
+        const formData = new FormData();
+        formData.append('imagen', blob, 'captura.jpg');
+        formData.append('gesto', this.gesture.nombre);
+        formData.append('cumple', this.cumple.toString());
+        formData.append('usuario', '0cfdef68-d2e2-4945-9c20-737ae9329f76');
+  
+        try {
+          // Enviar la solicitud a la API
+          const response = await fetch(
+            'http://localhost:3000/api/prueba/con-imagen',
+            {
+              method: 'POST',
+              body: formData,
             }
-        } else {
-            alert('Error al generar la imagen.');
+          );
+  
+          if (response.ok) {
+            Swal.fire({
+              icon: 'success',
+              title: '¡Prueba enviada!',
+              text: 'Los datos se enviaron correctamente.',
+              confirmButtonText: 'Aceptar',
+            });
+          } else {
+            const errorText = await response.text();
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al enviar',
+              text: `No se pudo enviar la prueba. ${errorText}`,
+              confirmButtonText: 'Aceptar',
+            });
+          }
+        } catch (error) {
+          console.error('Error al enviar la solicitud:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de conexión',
+            text: 'Ocurrió un error al intentar enviar los datos.',
+            confirmButtonText: 'Aceptar',
+          });
         }
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al generar la imagen',
+          text: 'No se pudo generar la imagen para la prueba.',
+          confirmButtonText: 'Aceptar',
+        });
+      }
     }, 'image/jpeg'); // Especificar el formato como JPEG
+  }
 }
-}
-
-

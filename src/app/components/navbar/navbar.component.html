@@ -3,22 +3,55 @@
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <div class="flex-shrink-0">
-          <a href="#" class="text-xl font-bold">Logo</a>
+          <a href="/">
+            <img 
+              src="https://www.lasallep.edu.mx/ulsap/oferta-educativa/img/chevron.png" 
+              alt="Logo Universidad La Salle" 
+              class="h-10"
+            />
+          </a>
         </div>
-        <!-- Navigation Links -->
         <div class="hidden md:flex space-x-4">
-          @for (item of listaMenu; track $index) {
-            <a routerLink="{{item.url}}" routerLinkActive="border" class="hover:bg-red-300 px-3 py-2 rounded-md">{{item.title}}</a>
+          @if(isLogged) {
+
+              @if (isAdmin==true) {
+                <a class="nav-link hover:bg-red-300 px-3 py-2 rounded-md" routerLinkActive="border" routerLink="/registropruebas">Registro Pruebas</a>
+              }
+              @if (isAdmin==false) {
+              <a class="nav-link hover:bg-red-300 px-3 py-2 rounded-md" routerLinkActive="border" routerLink="/homeuser">Home</a>
+              <a class="nav-link hover:bg-red-300 px-3 py-2 rounded-md" routerLinkActive="border" routerLink="/home">Gestos</a>
+              }
+              
+            <a class="nav-link bg-white rounded-md ml-2 text-black p-2 hover:cursor-pointer" (click)="logout()">Log Out</a>
+
           }
         </div>
-        <!-- Mobile Menu Button -->
-        <div class="md:hidden">
-          <button class="text-white focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-          </button>
+            <!-- Mobile Menu Button -->
+          <div class="md:hidden">
+            <button class="text-white focus:outline-none" (click)="toggleMobileMenu()">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div *ngIf="mobileMenuOpen" class="md:hidden mt-2 space-y-2">
+          <ng-container *ngIf="isLogged">
+            <ng-container *ngIf="isAdmin">
+              <a class="block nav-link hover:bg-red-300 px-3 py-2 rounded-md" routerLinkActive="border" routerLink="/registropruebas">Registro Pruebas</a>
+            </ng-container>
+            <ng-container *ngIf="!isAdmin">
+              <a class="block nav-link hover:bg-red-300 px-3 py-2 rounded-md" routerLinkActive="border" routerLink="/homeuser">Home</a>
+              <a class="block nav-link hover:bg-red-300 px-3 py-2 rounded-md" routerLinkActive="border" routerLink="/home">Gestos</a>
+            </ng-container>
+            <a class="block nav-link bg-white rounded-md text-black p-2 hover:cursor-pointer" (click)="logout()">Log Out</a>
+          </ng-container>
         </div>
       </div>
-    </div>
+
+
+    
+
   </nav>
