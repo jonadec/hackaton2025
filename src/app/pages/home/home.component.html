@@ -1,0 +1,24 @@
+<div class="align-center p-4 bg-white rounded-lg shadow-md max-w-md mx-auto mt-10">
+  <h2 class="text-xl font-semibold mb-2">Haz el gesto:</h2>
+  <h1 class="text-3xl font-bold text-center mb-4">{{ gesture.nombre }}</h1>
+  
+  <video #video autoplay muted class="w-300 rounded shadow-md mb-4"></video>
+  
+  <div [ngClass]="cumple ? 'text-green-600' : 'text-red-600'" class="text-2xl font-semibold mb-4">
+    {{ cumple ? '✅ Cumple' : '❌ No Cumple' }}
+  </div>
+
+  <button 
+    (click)="cambiarGesto()"
+    class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition"
+  >
+    Cambiar gesto
+  </button>
+
+  <button 
+    (click)="enviar()"
+    class="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition mt-4"
+  >
+    Enviar
+  </button>
+</div>
