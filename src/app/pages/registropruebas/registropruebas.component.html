@@ -15,9 +15,10 @@
       <!-- Información de la prueba -->
       <div>
         <p><strong>Gesto:</strong> {{ prueba.gesto }}</p>
-        <p><strong>Resultado:</strong> {{ prueba.cumple === 'true' ? 'Cumple' : 'No Cumple' }}</p>
+        <p><strong>Resultado:</strong> {{ prueba.cumple === 'true' ? 'Cumple ✅' : 'No Cumple ❌' }}</p>
         <p><strong>Usuario:</strong> {{ prueba.usuario.nombre }} {{ prueba.usuario.apellidopa }} {{ prueba.usuario.apellidoma }}</p>
         <p><strong>Email:</strong> {{ prueba.usuario.email }}</p>
+        <p><strong>Fecha:</strong> {{ prueba.fecha | date:'dd/MM/yyyy, h:mm a' }}</p>
       </div>
     </div>
   </div>
