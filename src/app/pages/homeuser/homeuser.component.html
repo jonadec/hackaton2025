@@ -1,24 +1,38 @@
-<div class="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
+<div class="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
   <!-- Hero Section -->
-  <div class="bg-white shadow-lg rounded-lg p-8 max-w-3xl text-center">
-    <h1 class="text-4xl font-bold text-[#9d2449] mb-4">Bienvenido al Sistema de Detección de Gestos</h1>
-    <p class="text-gray-700 text-lg mb-6">
+  <div class="p-7 max-w-6xl text-center">
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#9d2449] mb-12 sm:mb-16 lg:mb-24">
+      Bienvenido al Sistema de Detección de Gestos
+    </h1>
+    <p class="text-gray-700 text-sm sm:text-base lg:text-lg mb-6">
       Este sitio utiliza la tecnología de <strong>MediaPipe</strong> para detectar gestos faciales y corporales de manera precisa y eficiente. 
       Aquí podrás realizar pruebas de detección de gestos y explorar los resultados.
     </p>
+    <img 
+      src="https://ai.google.dev/static/mediapipe/images/solutions/examples/hand_gesture.png?hl=es-419" 
+      alt="Ejemplo de gesto de mano con MediaPipe" 
+      class="mx-auto mb-6 w-full max-w-xs sm:max-w-sm lg:max-w-md rounded-lg shadow" />
     <button 
       (click)="irAPaginaHome()"
-      class="bg-[#9d2449] text-white px-6 py-3 rounded-lg shadow hover:bg-[#851b3a] transition">
+      class="bg-[#9d2449] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow hover:cursor-pointer transition hover:bg-[#851b3a]">
       Subir Pruebas de Gestos
     </button>
   </div>
 
-  <!-- Aviso de Privacidad -->
-  <div class="bg-gray-800 text-white mt-8 p-4 rounded-lg max-w-3xl text-center">
-    <p class="text-sm">
-      Este sitio cumple con las disposiciones de la <strong>GDPR</strong> y la <strong>LFPDPPP</strong>. 
-      La información recopilada será utilizada únicamente para fines de detección de gestos y no será compartida con terceros. 
-      Al continuar utilizando este sitio, aceptas nuestras políticas de privacidad.
-    </p>
+  <!-- Modal de Aviso de Privacidad -->
+  <div *ngIf="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-xs z-50 px-4">
+    <div class="bg-[#9d2449] text-white p-6 rounded-2xl max-h-2xl h-auto max-w-lg sm:max-w-xl lg:max-w-2xl text-center shadow-2xl">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 sm:mb-12 lg:mb-16">Aviso de Privacidad</h2>
+      <p class="text-sm sm:text-base lg:text-lg text-justify mb-4">
+        Este sitio cumple con las disposiciones de la <strong>GDPR</strong> y la <strong>LFPDPPP</strong>. 
+        La información recopilada será utilizada únicamente para fines de detección de gestos y no será compartida con terceros. 
+        Al continuar utilizando este sitio, aceptas nuestras políticas de privacidad.
+      </p>
+      <button 
+        (click)="cerrarModal()"
+        class="bg-white font-bold text-[#9d2449] px-4 py-2 rounded-md hover:bg-[#851b3a] transition cursor-pointer hover:scale-105 hover:text-white w-full sm:w-1/2 mt-6">
+        Aceptar
+      </button>
+    </div>
   </div>
 </div>

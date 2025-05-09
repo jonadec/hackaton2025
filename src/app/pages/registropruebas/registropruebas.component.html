@@ -1,24 +1,42 @@
 <div class="container mx-auto p-4">
-  <h1 class="text-2xl font-bold mb-4">Registro de Pruebas</h1>
-  
-  <!-- Mostrar mensaje si no hay pruebas -->
-  <div *ngIf="pruebas.length === 0" class="text-center text-gray-500">
-    No hay pruebas registradas.
-  </div>
+  <div class="flex flex-col items-center justify-center">
 
-  <!-- Mostrar las pruebas -->
-  <div *ngFor="let prueba of pruebas" class="bg-white shadow-md rounded-lg p-4 mb-4">
-    <div class="flex items-center">
-      <!-- Imagen de la prueba -->
-      <img [src]="prueba.imagen" alt="Imagen de la prueba" class="w-32 h-32 object-cover rounded-md mr-4">
-      
-      <!-- Información de la prueba -->
-      <div>
-        <p><strong>Gesto:</strong> {{ prueba.gesto }}</p>
-        <p><strong>Resultado:</strong> {{ prueba.cumple === 'true' ? 'Cumple ✅' : 'No Cumple ❌' }}</p>
-        <p><strong>Usuario:</strong> {{ prueba.usuario.nombre }} {{ prueba.usuario.apellidopa }} {{ prueba.usuario.apellidoma }}</p>
-        <p><strong>Email:</strong> {{ prueba.usuario.email }}</p>
-        <p><strong>Fecha:</strong> {{ prueba.fecha | date:'dd/MM/yyyy, h:mm a' }}</p>
+    <h1 class="text-5xl text-center mt-10 font-black mb-4 text-[#9d2449]">Registro de Pruebas</h1>
+    
+    <!-- Mostrar mensaje si no hay pruebas -->
+    <div *ngIf="pruebas.length === 0" class="text-center animate-pulse text-gray-500">
+      No hay pruebas registradas.
+    </div>
+    
+    <!-- Mostrar las pruebas -->
+    <div *ngFor="let prueba of pruebas" class="bg-white border-t-2 border-t-[#9d2449] w-1/2 p-4 mb-4">
+      <div class="flex items-center">
+        <!-- Imagen de la prueba -->
+        <img [src]="prueba.imagen" alt="Imagen de la prueba" class="w-32 h-32 object-cover rounded-md mr-4">
+        
+        <!-- Información de la prueba -->
+        <div>
+          <div class="my-2">
+            <h1 class="font-black text-xl text-[#9d2449]">Gesto</h1>
+            <p>{{prueba.gesto}}</p>
+          </div>
+          <div class="my-2">
+            <h1 class="font-black text-xl text-[#9d2449]">Resultado</h1>
+            <p>{{prueba.cumple === 'true' ? 'Cumple ✅' : 'No Cumple ❌'}}</p>
+          </div>
+          <div class="my-2">
+            <h1 class="font-black text-xl text-[#9d2449]">Usuario</h1>
+            <p>{{prueba.usuario.nombre}} {{prueba.usuario.apellidopa}} {{prueba.usuario.apellidoma}}</p>
+          </div>
+          <div class="my-2">
+            <h1 class="font-black text-xl text-[#9d2449]">Correo electrónico</h1>
+            <p>{{prueba.usuario.email}}</p>
+          </div>
+          <div class="my-2">
+            <h1 class="font-black text-xl text-[#9d2449]">Fecha</h1>
+            <p>{{ prueba.fecha | date:'dd/MM/yyyy, h:mm a' }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -1,24 +1,30 @@
-<div class="align-center p-4 bg-white rounded-lg shadow-md max-w-md mx-auto mt-10">
-  <h2 class="text-xl font-semibold mb-2">Haz el gesto:</h2>
-  <h1 class="text-3xl font-bold text-center mb-4">{{ gesture.nombre }}</h1>
+<div class="align-center max-w-screen w-full max-h-screen h-full sm:w-3/4 md:w-2/6 mx-auto mt-2 px-4">
+  <h2 class="text-4xl sm:text-5xl md:text-6xl text-[#9d2449] font-bold text-center">Reconocimiento de gestos</h2>
+  <h1 class="text-xl sm:text-2xl font-bold text-center mb-4 mt-10 text-gray-700">{{ gesture.nombre }}</h1>
   
-  <video #video autoplay muted class="w-300 rounded shadow-md mb-4"></video>
+  <video 
+    #video 
+    autoplay 
+    muted 
+    [ngClass]="cumple ? 'border-2 border-white' : 'border-2 border-red-800'" 
+    class="w-full sm:w-3/4 md:w-400 mb-4 rounded-4xl">
+  </video>
   
-  <div [ngClass]="cumple ? 'text-green-600' : 'text-red-600'" class="text-2xl font-semibold mb-4">
+  <div 
+    [ngClass]="cumple ? 'text-green-600' : 'text-red-600'" 
+    class="text-center text-lg sm:text-xl md:text-2xl font-semibold mb-4">
     {{ cumple ? '✅ Cumple' : '❌ No Cumple' }}
   </div>
 
   <button 
     (click)="cambiarGesto()"
-    class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition"
-  >
+    class="bg-[#9d2449] hover:scale-105 cursor-pointer hover:animate-pulse text-white font-semibold px-4 py-2 rounded-xl mx-auto block sm:inline-block sm:mx-2 hover:bg-gradient-to-r hover:from-[#9d2449] hover:to-85% transition">
     Cambiar gesto
   </button>
-
+    
   <button 
     (click)="enviar()"
-    class="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition mt-4"
-  >
+    class="bg-green-600 hover:scale-105 cursor-pointer hover:animate-pulse text-white px-4 py-2 rounded-xl font-semibold transition mt-4 block sm:inline-block sm:mt-0 sm:mx-2">
     Enviar
   </button>
 </div>
